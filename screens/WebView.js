@@ -58,7 +58,11 @@ const WebViewScreen = ({settings, setSettings, openSettings, urlToOpen}) => {
       GoogleCast.onCastStateChanged(castState => {
         // 'noDevicesAvailable' | 'notConnected' | 'connecting' | 'connected'
         if (castState === 'connected') {
-          webviewRef.current?.injectJavaScript(`alert('Chromecast connected')`);
+          // webviewRef.current?.injectJavaScript(`alert('Chromecast connected')`);
+          Alert.alert(
+            'Chromecast connected',
+            'To cast a video click the play button.',
+          );
         }
       });
 

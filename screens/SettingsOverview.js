@@ -15,6 +15,7 @@ import {decode as utf8decode, encode as utf8encode} from 'utf8';
 import DocumentPicker from 'react-native-document-picker';
 import RNFS from 'react-native-fs';
 
+import updateChanges from '../utils/updateChanges';
 import Colors from '../constants/Colors';
 
 const SettingsOverview = ({navigation, openURL, settings, setSettings}) => {
@@ -26,8 +27,8 @@ const SettingsOverview = ({navigation, openURL, settings, setSettings}) => {
           const settingsString = data;
           const newSettings = JSON.parse(settingsString);
           if (typeof newSettings.hideSettings === 'object') {
-            setSettings(newSettings);
-            Alert.alert('Settings imported. You have to save now!');
+            updateChanges(newSettings, setSettings, false);
+            Alert.alert('Settings imported.', 'You have to save now!');
           } else {
             throw new Error('Selected file has wrong format.');
           }

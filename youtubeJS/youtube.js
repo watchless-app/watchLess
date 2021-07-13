@@ -2,6 +2,12 @@ export default () => {
   return `
 try {
   (function () {
+    // prevent from running twice
+    if(window['afv_has_run']){
+      return;
+    }
+    window['afv_has_run'] = true;
+
     ////////////////////
     // Elements
     //////////////////

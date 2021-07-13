@@ -2,17 +2,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {DefaultSettings} from '../constants/DefaultSettings';
 import {version as currentVersion} from '../package.json';
 
-export default async (settings, setSettings) => {
+export default async (settings, setSettings, checkVersion = true) => {
   const lastVersion = await AsyncStorage.getItem('lastVersion');
 
-  if (
-    !(
-      convertVersionStringIntoNumber(currentVersion) >
-      convertVersionStringIntoNumber(lastVersion)
-    )
-  ) {
-    setSettings(settings);
-    return;
+  if (checkVersion) {
+    if (
+      !(
+        convertVersionStringIntoNumber(currentVersion) >
+        convertVersionStringIntoNumber(lastVersion)
+      )
+    ) {
+      setSettings(settings);
+      return;
+    }
   }
 
   /*
@@ -43,7 +45,9 @@ export default async (settings, setSettings) => {
 
   setSettings(newSettings);
 
-  setLastVersion();
+  if (checkVersion) {
+    setLastVersion();
+  }
 };
 
 export const setLastVersion = () => {

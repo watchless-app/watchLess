@@ -3,10 +3,22 @@
 &nbsp;
 &nbsp;
 
-A Youtube Player that removes addictive elements like recommendations or trending tab.
+A Youtube Player App that removes addictive elements like recommendations or trending tab.
+
+Download: [addiction-free-video.github.io](https://addiction-free-video.github.io/)
 
 Tech Stack: React native
 
-[addiction-free-video.github.io](https://addiction-free-video.github.io/)
-
 [community forum](https://addiction-free-video.tribe.so/)
+
+## Developer Guide
+
+Useful commands:
+
+- `npm install` - Install node modules
+- `npx react-native start` - start metro
+- `npx react-native run-android --variant=WebsiteDebug` - run android
+- `cd android && ./gradlew assembleWebsiteRelease` - build apk
+- `cd android && ./gradlew bundleWebsiteRelease` - build bundle
+
+Availabe Flavors (variant = Flavor+Debug/Release): `googlePlay`, `amazon`, `website`

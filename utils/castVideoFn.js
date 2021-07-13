@@ -1,4 +1,5 @@
 import GoogleCast from 'react-native-google-cast';
+import {Alert} from 'react-native';
 
 const fetchYoutubeVideo = async url => {
   const resultRaw = await fetch(url);
@@ -48,7 +49,11 @@ export const castVideo = async (data, client, settings) => {
         .then(() => {
           GoogleCast.showExpandedControls();
         })
-        .catch(console.log);
+        .catch(() => {
+          Alert.alert('Cast faild', 'could not load media');
+        });
     }
+  } else {
+    // Do nothing
   }
 };

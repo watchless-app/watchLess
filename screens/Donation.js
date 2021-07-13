@@ -2,8 +2,19 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Button, Alert} from 'react-native';
 import CountryPicker from 'react-native-country-picker-modal';
 
-import {requestPurchase, useIAP} from 'react-native-iap';
+// import {
+//   requestPurchase,
+//   finishTransaction,
+//   purchaseUpdatedListener,
+//   purchaseErrorListener,
+//   initConnection,
+//   getProducts,
+//   endConnection,
+//   flushFailedPurchasesCachedAsPendingAndroid,
+// } from 'react-native-iap';
+const BuildConfig = require('react-native-build-config');
 
+import HyperLink from '../components/HyperLink';
 import AcceptedCountries from '../constants/AcceptedCountries';
 
 const iapSkus = [
@@ -13,57 +24,129 @@ const iapSkus = [
 ];
 
 const handleDonation = amount => {
-  if (__DEV__) {
-    requestPurchase('android.test.purchased').then(console.log);
-    return;
-  }
-
-  requestPurchase(`com.addiction_free_video.donate${amount}`).then(console.log);
+  // if (__DEV__) {
+  //   requestPurchase('android.test.purchased').then(console.log);
+  //   return;
+  // }
+  // requestPurchase(`com.addiction_free_video.donate${amount}`).then(console.log);
 };
 
 const Donate = ({navigation}) => {
-  const {
-    finishTransaction,
-    currentPurchase,
-    currentPurchaseError,
-    getProducts,
-  } = useIAP();
   const [amountToDonate, setAmountToDonate] = useState();
   const [selectedCountry, setSelectedCountry] = useState();
   const [invalidCountrySelected, setInvalidCountrySelected] = useState(false);
 
-  useEffect(() => {
-    getProducts(__DEV__ ? ['android.test.purchased'] : iapSkus);
-  }, [getProducts]);
+  // Following code doesn't seem to work with amazon appstore
+  //
+  // const {
+  //   finishTransaction,
+  //   currentPurchase,
+  //   currentPurchaseError,
+  //   getProducts,
+  // } = useIAP();
+  //
+  // useEffect(() => {
+  //   const checkCurrentPurchase = async purchase => {
+  //     if (purchase) {
+  //       const receipt = purchase.transactionReceipt;
+  //       if (receipt)
+  //         try {
+  //           await finishTransaction(purchase);
+  //           Alert.alert('Thank you for your donation!', '', [
+  //             {
+  //               text: 'Close',
+  //               onPress: () => {
+  //                 navigation.navigate('settings');
+  //               },
+  //             },
+  //           ]);
+  //         } catch (ackErr) {
+  //           Alert.alert(ackErr);
+  //         }
+  //     }
+  //   };
+  //   checkCurrentPurchase(currentPurchase);
+  // }, [currentPurchase, finishTransaction]);
+  //
+  // useEffect(() => {
+  //   if (currentPurchaseError) {
+  //     Alert.alert(currentPurchaseError?.message);
+  //   }
+  // }, [currentPurchaseError]);
 
-  useEffect(() => {
-    const checkCurrentPurchase = async purchase => {
-      if (purchase) {
-        const receipt = purchase.transactionReceipt;
-        if (receipt)
-          try {
-            await finishTransaction(purchase);
-            Alert.alert('Thank you for your donation!', '', [
-              {
-                text: 'Close',
-                onPress: () => {
-                  navigation.navigate('settings');
-                },
-              },
-            ]);
-          } catch (ackErr) {
-            Alert.alert(ackErr);
-          }
+  let purchaseListener, errorListener;
+
+  // useEffect(() => {
+  //   if (BuildConfig.default.FLAVOR == 'website') {
+  //     return;
+  //   }
+
+  //   const initIAP = async () => {
+  //     await initConnection();
+
+  //     await getProducts(__DEV__ ? ['android.test.purchased'] : iapSkus);
+
+  //     purchaseListener = purchaseUpdatedListener(async purchase => {
+  //       // Alert.alert('msg', JSON.stringify(purchase));
+  //       const receipt = purchase.transactionReceipt;
+  //       if (receipt || BuildConfig.default.FLAVOR == 'amazon') {
+  //         try {
+  //           await finishTransaction(purchase);
+  //           Alert.alert('Thank you for your donation!', '', [
+  //             {
+  //               text: 'Close',
+  //               onPress: () => {
+  //                 navigation.navigate('settings');
+  //               },
+  //             },
+  //           ]);
+  //         } catch (ackErr) {
+  //           Alert.alert('Something went wrong');
+  //           console.log(ackErr);
+  //         }
+  //       }
+  //     });
+
+  //     errorListener = purchaseErrorListener(err => {
+  //       Alert.alert('Something went wrong');
+  //       console.log(err);
+  //     });
+  //   };
+  //   initIAP();
+
+  //   return () => {
+  //     purchaseListener.remove();
+  //     errorListener.remove();
+  //     endConnection();
+  //   };
+  // }, []);
+
+  const handleContinuePress = () => {
+    if (BuildConfig.default.FLAVOR == 'amazon') {
+      handleDonation(amountToDonate);
+    } else {
+      if (isLocationAccepted(selectedCountry)) {
+        handleDonation(amountToDonate);
+      } else {
+        setInvalidCountrySelected(true);
       }
-    };
-    checkCurrentPurchase(currentPurchase);
-  }, [currentPurchase, finishTransaction]);
-
-  useEffect(() => {
-    if (currentPurchaseError) {
-      Alert.alert(currentPurchaseError?.message);
     }
-  }, [currentPurchaseError]);
+  };
+
+  if (BuildConfig.default.FLAVOR == 'website') {
+    return (
+      <View style={styles.container}>
+        <Text>Thank you for considering a donation! 🙏</Text>
+        <Text>
+          To donate please contact me at:{' '}
+          <HyperLink
+            href={`mailto:afv@jakobg.dev?subject=AF-Video%20App%20Donation&body=I%20would%20like%20to%20donate%20(amount)%3A%0D%0AI%20am%20located%20in%20(your%20country)%3A%0D%0AMy%20name%20is%3A%20`}>
+            afv@jakobg.dev
+          </HyperLink>
+        </Text>
+      </View>
+    );
+  }
 
   if (invalidCountrySelected) {
     return (
@@ -121,16 +204,7 @@ const Donate = ({navigation}) => {
           />
           {selectedCountry && (
             <View style={styles.continueButton}>
-              <Button
-                title="Continue"
-                onPress={() => {
-                  if (isLocationAccepted(selectedCountry)) {
-                    handleDonation(amountToDonate);
-                  } else {
-                    setInvalidCountrySelected(true);
-                  }
-                }}
-              />
+              <Button title="Continue" onPress={handleContinuePress} />
             </View>
           )}
         </View>

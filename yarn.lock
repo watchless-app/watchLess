@@ -5329,6 +5329,11 @@ react-is@^16.13.0, react-is@^16.7.0, react-is@^16.8.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
+react-native-build-config@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/react-native-build-config/-/react-native-build-config-0.3.2.tgz#bb5f2eaa13bb2ebe0870875fdb92faec3caeee4e"
+  integrity sha512-yGWzeJNR1m0Cml6grVEnE/5/5dcKvDLmnubJkA/6Tt5P/40JAgrtjwEnC8NifhLIKZ1rEzbL/inIh/m7qkvEtg==
+
 react-native-codegen@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/react-native-codegen/-/react-native-codegen-0.0.6.tgz#b3173faa879cf71bfade8d030f9c4698388f6909"
@@ -5379,10 +5384,10 @@ react-native-google-cast@^4.1.1:
   resolved "https://registry.yarnpkg.com/react-native-google-cast/-/react-native-google-cast-4.1.1.tgz#60c23dc904c8cd6fc8325f586e0ba7839dbf8bd9"
   integrity sha512-cdu6D4O7DeSMyJXPWeGdp8ZetyUo9c2SE8lYX5ZdbYRqH+UbsAiXp6s97ycD+kDsSW/wkvT4vkxptzZmxfY2KA==
 
-react-native-iap@^6.2.4:
-  version "6.2.4"
-  resolved "https://registry.yarnpkg.com/react-native-iap/-/react-native-iap-6.2.4.tgz#667849572d4c471ec006bf907f42dd1c0707af2e"
-  integrity sha512-6B3zPisykoLolG5xsz/CKzNX1IWqcoJDG7C0qrOgCWTFJGM8XXDh45jZ/+NLAZARQTj2DVs5wtI6CRqDBGmgzw==
+react-native-iap@^7.0.3:
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/react-native-iap/-/react-native-iap-7.0.3.tgz#16f275a7edce007255c79d4156c09591f742b2e8"
+  integrity sha512-NbEO/TNPedevMIcij7tuo5vUrX65SdJm/Kx3WyctF7Lisr2VL2VVsHStx1SP+oXkE++lsydq2OSkC0jpb2HhMA==
   dependencies:
     dooboolab-welcome "^1.3.0"
 
