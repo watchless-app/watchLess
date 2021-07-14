@@ -1,6 +1,6 @@
 {
   "name": "addiction_free_video_rn",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "private": true,
   "scripts": {
     "android": "react-native run-android",

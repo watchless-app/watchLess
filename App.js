@@ -30,6 +30,18 @@ const App = () => {
       }
     };
     getUrlAsync();
+
+    const setDeepLinkURL = ({url}) => {
+      if (url) {
+        setUrlToOpen(url);
+      }
+    };
+
+    Linking.addEventListener('url', setDeepLinkURL);
+
+    return () => {
+      Linking.removeEventListener('url', setDeepLinkURL);
+    };
   }, []);
 
   AsyncStorage.getItem('privacyPolicyAccepted').then(value => {
