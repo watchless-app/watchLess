@@ -21,7 +21,7 @@ const fetchYoutubeVideo = async url => {
   } else {
     console.log(result, url);
     throw new Error(
-      'Could not find media source. Please try again later or change Invidious API Endpoint.',
+      'Could not find media source. Please try again later or change Invidious API Endpoint. (2)',
     );
   }
 };
