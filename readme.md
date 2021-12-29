@@ -15,7 +15,7 @@ Tech Stack: React native
 
 Useful commands:
 
-- `npm install` - Install node modules
+- `yarn install` - Install node modules
 - `npx react-native start` - start metro
 - `npx react-native run-android --variant=WebsiteDebug` - run android
 - `cd android && ./gradlew assembleWebsiteRelease` - build apk

@@ -21,7 +21,8 @@ export const DefaultSettings = {
     // invidiousApi: 'https://invidious.snopyta.org',
     // invidiousApi: 'https://yt.cyberhost.uk',
     // invidiousApi: 'https://invidious.namazso.eu',
-    invidiousApi: 'https://invidious.moomoo.me',
+    // invidiousApi: 'https://invidious.moomoo.me',
+    invidiousApi: 'https://invidious.snopyta.org',
     invidiousApiAutoUpdate: true,
   },
   motivationalSettings: [

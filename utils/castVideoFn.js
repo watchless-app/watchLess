@@ -1,43 +1,49 @@
 import GoogleCast from 'react-native-google-cast';
-import {Alert} from 'react-native';
+import {Alert, ToastAndroid} from 'react-native';
+
+import {getParameterByName} from '../utils/others';
 
 const fetchYoutubeVideo = async url => {
   const resultRaw = await fetch(url);
   const result = await resultRaw.json();
 
+  if (!result || !result.formatStreams) {
+    console.log(result, url);
+    throw new Error(
+      'Could not find media source. Please try again later or change Invidious API Endpoint.',
+    );
+  }
+
   const lastStream = result.formatStreams[result.formatStreams.length - 1];
 
   if (lastStream) {
     return {mediaUrl: lastStream.url, videoData: result};
+  } else {
+    console.log(result, url);
+    throw new Error(
+      'Could not find media source. Please try again later or change Invidious API Endpoint.',
+    );
   }
 };
 
-const getParameterByName = (name, url) => {
-  if (!url) url = window.location.href;
-  name = name.replace(/[\[\]]/g, '\\$&');
-  var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-    results = regex.exec(url);
-  if (!results) return null;
-  if (!results[2]) return '';
-  return decodeURIComponent(results[2].replace(/\+/g, ' '));
-};
-
 export const castVideo = async (data, client, settings) => {
-  const videoID = getParameterByName('v', data.url);
+  try {
+    const videoID = getParameterByName('v', data.url);
 
-  const castState = await GoogleCast.getCastState();
+    const castState = await GoogleCast.getCastState();
 
-  if (castState == 'connected') {
-    const api = settings.advancedSettings.invidiousApi;
-    const url = `${api}/api/v1/videos/${videoID}`;
+    if (castState == 'connected') {
+      const api = settings.advancedSettings.invidiousApi;
+      const url = `${api}/api/v1/videos/${videoID}`;
 
-    const {mediaUrl, videoData} = await fetchYoutubeVideo(url);
+      ToastAndroid.show('Casting video', ToastAndroid.SHORT);
 
-    console.log(mediaUrl);
+      const {mediaUrl, videoData} = await fetchYoutubeVideo(url);
 
-    if (client) {
-      client
-        .loadMedia({
+      console.log(mediaUrl);
+
+      if (client) {
+        await client.loadMedia({
           mediaInfo: {
             contentUrl: mediaUrl,
             contentId: videoID,
@@ -45,15 +51,12 @@ export const castVideo = async (data, client, settings) => {
               title: videoData.title,
             },
           },
-        })
-        .then(() => {
-          GoogleCast.showExpandedControls();
-        })
-        .catch(() => {
-          Alert.alert('Cast faild', 'could not load media');
         });
+
+        GoogleCast.showExpandedControls();
+      }
     }
-  } else {
-    // Do nothing
+  } catch (e) {
+    Alert.alert(e.name, e.message);
   }
 };

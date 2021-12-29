@@ -3,7 +3,7 @@ export default () => {
 try {
   (function () {
     // prevent from running twice
-    if(window['afv_has_run']){
+    if (window['afv_has_run']) {
       return;
     }
     window['afv_has_run'] = true;
@@ -30,13 +30,6 @@ try {
 
     // Send post messages
     function AFV_sendPostMessage(messageToSend) {
-      // var message = {action: messageToSend};
-      //   if (!webkit.messageHandlers.cordova_iab) {
-      //     console.warn('Cordova IAB postMessage API not found!');
-      //     throw 'Cordova IAB postMessage API not found!';
-      //   } else {
-      //     webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(message));
-      //   }
       if (!window.ReactNativeWebView) {
         console.warn('window.ReactNativeWebView postMessage API not found!');
         throw 'window.ReactNativeWebView postMessage API not found!';
@@ -101,7 +94,7 @@ try {
     function AFV_handleCastIconClick(e) {
       e.preventDefault();
 
-      if(e.target.id === 'castIconButtonContainer'){
+      if (e.target.id === 'castIconButtonContainer') {
         AFV_sendPostMessage({
           action: 'cast_button_click',
         });
@@ -152,11 +145,24 @@ try {
 
     // Inset DOM Elements into Youtube and manipulate the player
     function AFV_doYoutubeManipulations() {
-      // Make sure no one seraches for "youtube"
-      if (
-        window.location.href.toLowerCase() ===
-        'https://m.youtube.com/results?search_query=youtube'
-      ) {
+      // Make sure no one seraches for specific terms
+      var notAllowedSearchterms = ['youtube', 'trending'];
+      var searchParameter = getParameterByName(
+        'search_query',
+        window.location.href,
+      );
+      var includesNotAllowedSearchTerm = false;
+
+      for (var i = 0; i < notAllowedSearchterms.length; i++) {
+        var term = notAllowedSearchterms[i];
+        if (
+          searchParameter &&
+          searchParameter.toLowerCase() === term
+        ) {
+          includesNotAllowedSearchTerm = true;
+        }
+      }
+      if (includesNotAllowedSearchTerm) {
         window.location.href = 'https://m.youtube.com/';
       }
 
@@ -204,13 +210,13 @@ try {
 
       var videobg = document.querySelector('.player-controls-background');
       try {
-        if(videobg){
+        if (videobg) {
           videobg.removeEventListener('click', AFV_addCastIcon);
         }
       } catch (error) {
         //DoNothing
       }
-      if(videobg) {
+      if (videobg) {
         videobg.addEventListener('click', AFV_addCastIcon);
       }
 
@@ -256,11 +262,20 @@ try {
 
     // Trigger Manipulations only when URL changes
     function AFV_onPageChanged() {
-      if (currentYoutubeUrl !== window.location.href) {
-        AFV_sheduleYoutubeManipulations();
-        AFV_sendPostMessage({action: 'page_change', url: window.location.href});
-      }
-      currentYoutubeUrl = window.location.href;
+      setTimeout(function () {
+        if (currentYoutubeUrl !== window.location.href) {
+          try {
+            AFV_sheduleYoutubeManipulations();
+          } catch (e) {
+            alert(e);
+          }
+          AFV_sendPostMessage({
+            action: 'page_change',
+            url: window.location.href,
+          });
+          currentYoutubeUrl = window.location.href;
+        }
+      }, 500);
     }
 
     function AFV_openYoutubeWindow() {
@@ -269,19 +284,24 @@ try {
     }
 
     // Function that will be called later when user clicks on play/pause in media controls in notifications
-    function AFV_toggleVideo(methode) {
-      var videoElement = document.querySelector('video');
-      if (videoElement) {
-        switch (methode) {
-          case 'play':
-            videoElement.play();
-            break;
+    // function AFV_toggleVideo(methode) {
+    //   var videoElement = document.querySelector('video');
+    //   if (videoElement) {
+    //     switch (methode) {
+    //       case 'play':
+    //         videoElement.play();
+    //         break;
 
-          default:
-            videoElement.pause();
-            break;
-        }
-      }
+    //       default:
+    //         videoElement.pause();
+    //         break;
+    //     }
+    //   }
+    // }
+
+    function getParameterByName(name, url) {
+      var searchParams = new URLSearchParams(url);
+      return searchParams.get(name);
     }
 
     ////////////////////
@@ -295,15 +315,9 @@ try {
       youtubeLogo.addEventListener('click', AFV_sheduleYoutubeManipulations);
     }
 
-    document.body.addEventListener(
-      'click',
-      () => {
-        requestAnimationFrame(() => {
-          AFV_onPageChanged();
-        });
-      },
-      true,
-    );
+    document.body.addEventListener('click', AFV_onPageChanged);
+
+    document.addEventListener('touchstart', AFV_onPageChanged);
 
     ////////////////////
     // Initial Funciton Execution

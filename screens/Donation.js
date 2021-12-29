@@ -2,16 +2,15 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Button, Alert} from 'react-native';
 import CountryPicker from 'react-native-country-picker-modal';
 
-// import {
-//   requestPurchase,
-//   finishTransaction,
-//   purchaseUpdatedListener,
-//   purchaseErrorListener,
-//   initConnection,
-//   getProducts,
-//   endConnection,
-//   flushFailedPurchasesCachedAsPendingAndroid,
-// } from 'react-native-iap';
+import {
+  requestPurchase,
+  finishTransaction,
+  purchaseUpdatedListener,
+  purchaseErrorListener,
+  initConnection,
+  getProducts,
+  endConnection,
+} from 'react-native-iap';
 const BuildConfig = require('react-native-build-config');
 
 import HyperLink from '../components/HyperLink';
@@ -23,12 +22,16 @@ const iapSkus = [
   'com.addiction_free_video.donate15',
 ];
 
-const handleDonation = amount => {
-  // if (__DEV__) {
-  //   requestPurchase('android.test.purchased').then(console.log);
-  //   return;
-  // }
-  // requestPurchase(`com.addiction_free_video.donate${amount}`).then(console.log);
+const handleDonation = async amount => {
+  try {
+    if (__DEV__) {
+      await requestPurchase('android.test.purchased');
+      return;
+    }
+    await requestPurchase(`com.addiction_free_video.donate${amount}`);
+  } catch (error) {
+    Alert.alert('Something went wrong.', error.message);
+  }
 };
 
 const Donate = ({navigation}) => {
@@ -76,50 +79,58 @@ const Donate = ({navigation}) => {
 
   let purchaseListener, errorListener;
 
-  // useEffect(() => {
-  //   if (BuildConfig.default.FLAVOR == 'website') {
-  //     return;
-  //   }
+  useEffect(() => {
+    if (BuildConfig.default.FLAVOR == 'website') {
+      return;
+    }
 
-  //   const initIAP = async () => {
-  //     await initConnection();
+    const initIAP = async () => {
+      await initConnection();
 
-  //     await getProducts(__DEV__ ? ['android.test.purchased'] : iapSkus);
+      try {
+        await getProducts(__DEV__ ? ['android.test.purchased'] : iapSkus);
+      } catch (error) {
+        Alert.alert(
+          'Something went wrong.',
+          'Could not fetch available products.',
+        );
+        console.log(error);
+      }
 
-  //     purchaseListener = purchaseUpdatedListener(async purchase => {
-  //       // Alert.alert('msg', JSON.stringify(purchase));
-  //       const receipt = purchase.transactionReceipt;
-  //       if (receipt || BuildConfig.default.FLAVOR == 'amazon') {
-  //         try {
-  //           await finishTransaction(purchase);
-  //           Alert.alert('Thank you for your donation!', '', [
-  //             {
-  //               text: 'Close',
-  //               onPress: () => {
-  //                 navigation.navigate('settings');
-  //               },
-  //             },
-  //           ]);
-  //         } catch (ackErr) {
-  //           Alert.alert('Something went wrong');
-  //           console.log(ackErr);
-  //         }
-  //       }
-  //     });
+      purchaseListener = purchaseUpdatedListener(async purchase => {
+        // Alert.alert('msg', JSON.stringify(purchase));
+        const receipt = purchase.transactionReceipt;
+        if (receipt || BuildConfig.default.FLAVOR == 'amazon') {
+          try {
+            await finishTransaction(purchase);
+            Alert.alert('Thank you for your donation!', '', [
+              {
+                text: 'Close',
+                onPress: () => {
+                  navigation.navigate('settings');
+                },
+              },
+            ]);
+          } catch (ackErr) {
+            Alert.alert('Something went wrong');
+            console.log(ackErr);
+          }
+        }
+      });
 
-  //     errorListener = purchaseErrorListener(err => {
-  //       Alert.alert('Something went wrong');
-  //       console.log(err);
-  //     });
-  //   };
-  //   initIAP();
+      errorListener = purchaseErrorListener(err => {
+        Alert.alert('Something went wrong');
+        console.log(err);
+      });
+    };
+    initIAP();
 
-  //   return () => {
-  //     purchaseListener.remove();
-  //     errorListener.remove();
-  //     endConnection();
-  //   };
-  // }, []);
+    return () => {
+      purchaseListener.remove();
+      errorListener.remove();
+      endConnection();
+    };
+  }, []);
 
   const handleContinuePress = () => {
     if (BuildConfig.default.FLAVOR == 'amazon') {
