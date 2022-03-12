@@ -3,6 +3,9 @@ export const DefaultSettings = {
     //Elements hidden when set to true
     startPage: true,
     trendingPage: true,
+    shorts: false,
+    shortsSwipe: true,
+    shortsTab: true,
     recommended: true,
     likeButton: false,
     likeCount: true,
@@ -18,11 +21,7 @@ export const DefaultSettings = {
     customJS: '',
     noautoplay: true,
     hideHeader: false,
-    // invidiousApi: 'https://invidious.snopyta.org',
-    // invidiousApi: 'https://yt.cyberhost.uk',
-    // invidiousApi: 'https://invidious.namazso.eu',
-    // invidiousApi: 'https://invidious.moomoo.me',
-    invidiousApi: 'https://invidious.snopyta.org',
+    invidiousApi: 'https://vid.puffyan.us',
     invidiousApiAutoUpdate: true,
   },
   motivationalSettings: [

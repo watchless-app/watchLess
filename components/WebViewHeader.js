@@ -11,7 +11,7 @@ import {
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const WebViewHeader = ({setSettings, openSettings}) => {
+const WebViewHeader = ({setSettings, openSettings, webViewRef}) => {
   const handlePress = () => {
     Alert.alert('Hide Header?', '', [
       {
@@ -29,6 +29,7 @@ const WebViewHeader = ({setSettings, openSettings}) => {
             AsyncStorage.setItem('settings', JSON.stringify(newState));
             return newState;
           });
+          webViewRef.current?.reload();
         },
       },
     ]);
@@ -43,7 +44,7 @@ const WebViewHeader = ({setSettings, openSettings}) => {
             style={{width: 45, height: 45}}
           />
           <Text numberOfLines={1} style={styles.headerLeftText}>
-            Addiction Free Video
+            watchLess
           </Text>
         </View>
         <View style={styles.headerRight}>

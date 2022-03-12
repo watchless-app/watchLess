@@ -1,9 +1,13 @@
 import 'react-native-gesture-handler';
 
 import React, {useState, useEffect} from 'react';
-import {Linking} from 'react-native';
+import {Linking, useColorScheme} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {NavigationContainer} from '@react-navigation/native';
+import {
+  NavigationContainer,
+  DefaultTheme,
+  DarkTheme,
+} from '@react-navigation/native';
 
 import WebViewScreen from './screens/WebView';
 import PrivacyPolicy from './screens/PrivacyPolicy';
@@ -20,6 +24,7 @@ const App = () => {
   const [privacyPolicyAccepted, setPrivacyPolicyAccepted] = useState(true);
   const [pageToNaviagteTo, setPageToNavigateTo] = useState();
   const [settings, setSettings] = useState();
+  const scheme = useColorScheme();
 
   useEffect(() => {
     const getUrlAsync = async () => {
@@ -59,6 +64,7 @@ const App = () => {
         updateChanges(JSON.parse(value), setSettings);
       } else {
         setSettings(DefaultSettings);
+        AsyncStorage.setItem('settings', JSON.stringify(DefaultSettings));
         setLastVersion();
       }
     });
@@ -81,7 +87,9 @@ const App = () => {
   };
 
   return (
-    <NavigationContainer ref={navigatorRef}>
+    <NavigationContainer
+      ref={navigatorRef}
+      theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
       {showYoutube ? (
         <WebViewScreen
           openSettings={openSettings}

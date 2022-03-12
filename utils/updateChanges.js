@@ -43,6 +43,7 @@ export default async (settings, setSettings, checkVersion = true) => {
       DefaultSettings.advancedSettings.invidiousApi;
   }
 
+  AsyncStorage.setItem('settings', JSON.stringify(newSettings));
   setSettings(newSettings);
 
   if (checkVersion) {

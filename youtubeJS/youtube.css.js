@@ -7,7 +7,7 @@ export default () => {
   display: block;
 }
 
-.afv-start-page-donation-link {
+.afv-start-page-top-link {
   text-align: center;
   display: block;
   padding: 15px;

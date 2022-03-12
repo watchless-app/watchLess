@@ -51,7 +51,6 @@ const PrivacyPolicy = ({onPolicyAccepted}) => {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    backgroundColor: 'white',
   },
   button: {
     flex: 1,

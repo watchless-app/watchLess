@@ -86,7 +86,7 @@ const Save = ({settings, navigation, openURL}) => {
         />
         <View style={styles.motivationalContainer}>
           {motivationalSettings.map(item => (
-            <View style={styles.motivationalItem}>
+            <View key={item.id} style={styles.motivationalItem}>
               <MotivationalItem data={item} openURL={openURL} />
             </View>
           ))}

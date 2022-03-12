@@ -8,6 +8,7 @@ import {
   DeviceEventEmitter,
   Alert,
   BackHandler,
+  useColorScheme,
 } from 'react-native';
 import {WebView} from 'react-native-webview';
 import Orientation from 'react-native-orientation-locker';
@@ -38,6 +39,7 @@ const webviewRef = React.createRef();
 
 const WebViewScreen = ({settings, setSettings, openSettings, urlToOpen}) => {
   const client = useRemoteMediaClient();
+  const scheme = useColorScheme();
 
   const handleBackButton = () => {
     webviewRef.current?.goBack();
@@ -99,11 +101,7 @@ const WebViewScreen = ({settings, setSettings, openSettings, urlToOpen}) => {
 
       case 'video_playpause':
         if (data.url.indexOf('/watch?v=') > -1 && data.type === 'play') {
-          try {
-            castVideo(data, client, settings);
-          } catch (e) {
-            Alert.alert('Casting failed.');
-          }
+          castVideo(data, client, settings);
         }
         break;
 
@@ -137,8 +135,12 @@ const WebViewScreen = ({settings, setSettings, openSettings, urlToOpen}) => {
         {/* Include Cast button and hide it, otherwise cast doesn't work */}
         <CastButton />
       </View>
-      {!settings.advancedSettings.hideHeader && (
-        <WebViewHeader setSettings={setSettings} openSettings={openSettings} />
+      {!settings.advancedSettings?.hideHeader && (
+        <WebViewHeader
+          setSettings={setSettings}
+          openSettings={openSettings}
+          webViewRef={webviewRef}
+        />
       )}
       <WebView
         ref={webviewRef}
@@ -147,6 +149,7 @@ const WebViewScreen = ({settings, setSettings, openSettings, urlToOpen}) => {
         injectedJavaScript={stringJSandCSS}
         onMessage={handleMessage}
         onShouldStartLoadWithRequest={handleLoad}
+        forceDarkOn={scheme === 'dark'}
       />
     </View>
   );

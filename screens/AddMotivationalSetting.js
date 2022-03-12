@@ -14,7 +14,7 @@ import YoutubeSearch from '../components/YoutubeSearch';
 
 const AddMotivationalSetting = ({
   setSettings,
-  settings,
+  motivationalSettings,
   navigation,
   route,
   invidiousApi,
@@ -23,7 +23,7 @@ const AddMotivationalSetting = ({
   let itemToEdit = null;
 
   if (id) {
-    itemToEdit = settings.find(e => e.id === id);
+    itemToEdit = motivationalSettings.find(e => e.id === id);
   }
 
   const editMode = !!itemToEdit;
@@ -60,7 +60,7 @@ const AddMotivationalSetting = ({
       const newSetting = {
         ...localData,
         id: itemToEdit ? localData.id : guid(),
-        index: newIndex,
+        index: itemToEdit ? localData.index : newIndex,
         type: motivationType,
       };
 
@@ -95,7 +95,7 @@ const AddMotivationalSetting = ({
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity onPress={handleSave}>
-          <Text style={{padding: 5, paddingRight: 15}}>Save</Text>
+          <Text style={{padding: 5, paddingRight: 15}}>OK</Text>
         </TouchableOpacity>
       ),
       title: itemToEdit ? 'Edit Motivaiton' : 'Add Motivaiton',

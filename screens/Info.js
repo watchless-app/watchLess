@@ -12,22 +12,22 @@ const Info = () => {
       <Text
         style={{
           fontWeight: 'bold',
-        }}>{`Addiction Free Video App v${version}`}</Text>
+        }}>{`watchLess App v${version}`}</Text>
       <Text>
         This is app is an Open Source Project with the{' '}
-        <Link href="https://github.com/addiction-free-video">
+        <Link href="https://github.com/watchless-app">
           source code available on GitHub
         </Link>{' '}
         under the{' '}
-        <Link href="https://github.com/addiction-free-video/addiction-free-video/blob/master/LICENSE">
-          Apache 2.0
+        <Link href="https://github.com/watchless-app/watchLess/blob/main/LICENSE">
+          MIT
         </Link>{' '}
         license
       </Text>
       <Text>
         Also check out{' '}
-        <Link href="https://addiction-free-video.github.io/">
-          addiction-free-video.github.io
+        <Link href="https://watchless-app.github.io/">
+          watchless-app.github.io
         </Link>{' '}
         for more information.
       </Text>

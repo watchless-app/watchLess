@@ -137,26 +137,12 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.addiction_free_video_rn"
+        applicationId "li.tyou.watchless"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 9
-        versionName "0.2.5"
-    }
-    flavorDimensions "appstore"
-    productFlavors{
-        googlePlay{
-            dimension "appstore"
-            missingDimensionStrategy "store", "play"
-        }
-        amazon{
-            dimension "appstore"
-            missingDimensionStrategy "store", "amazon"
-        }
-        website{
-            dimension "appstore"
-            missingDimensionStrategy "store", "play"
-        }
+        versionName "0.3.0"
+        missingDimensionStrategy 'store', 'play'
     }
     splits {
         abi {
@@ -247,8 +233,6 @@ dependencies {
     }
 
     implementation "com.google.android.gms:play-services-cast-framework:${safeExtGet('castFrameworkVersion', '+')}"
-
-    implementation project(':react-native-fs')
 }
 
 def safeExtGet(prop, fallback) {

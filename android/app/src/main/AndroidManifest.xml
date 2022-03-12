@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.addiction_free_video_rn">
+  package="li.tyou.watchless">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -10,7 +10,7 @@
       android:label="@string/app_name"
       android:icon="@mipmap/ic_launcher_afv"
       android:roundIcon="@mipmap/ic_launcher_afv_round"
-      android:allowBackup="false"
+      android:allowBackup="true"
       android:theme="@style/AppTheme">
       <activity
         android:name=".MainActivity"

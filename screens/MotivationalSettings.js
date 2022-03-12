@@ -1,5 +1,14 @@
 import React, {useLayoutEffect, useCallback} from 'react';
-import {View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Button,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MotivationalSettingsItem = ({item, navigation, onSort}) => {
   const handleOpenDetails = () => {
@@ -31,16 +40,34 @@ const MotivationalSettingsItem = ({item, navigation, onSort}) => {
   );
 };
 
-const MotivationalSettings = ({setSettings, settings, navigation}) => {
-  const sorted = [...settings].sort((a, b) => {
-    return a.index - b.index;
-  });
+const MotivationalSettings = ({
+  setSettings,
+  motivationalSettings,
+  navigation,
+}) => {
+  const savePemanently = async () => {
+    const rawData = await AsyncStorage.getItem('settings');
+    const oldSettings = JSON.parse(rawData);
+
+    await AsyncStorage.setItem(
+      'settings',
+      JSON.stringify({
+        ...oldSettings,
+        motivationalSettings,
+      }),
+    );
+
+    Alert.alert(
+      'Motivational entries saved.',
+      'Any other settings you might have changed need to be saved seperatly.',
+    );
+  };
 
   const handleMoveItem = useCallback((index, direction) => {
     setSettings(prevState => {
       const newState = {...prevState};
 
-      const localSorted = [...newState.motivationalSettings].sort((a, b) => {
+      let localSorted = [...newState.motivationalSettings].sort((a, b) => {
         return a.index - b.index;
       });
 
@@ -59,6 +86,11 @@ const MotivationalSettings = ({setSettings, settings, navigation}) => {
       } else {
         localSorted[actualItemIndex].index = localSorted[indexToSwap].index;
         localSorted[indexToSwap].index = index;
+
+        localSorted = localSorted.sort((a, b) => {
+          return a.index - b.index;
+        });
+
         newState.motivationalSettings = localSorted;
 
         return newState;
@@ -79,8 +111,11 @@ const MotivationalSettings = ({setSettings, settings, navigation}) => {
 
   return (
     <View style={styles.container}>
+      <View>
+        <Button onPress={savePemanently} title="Save entries" />
+      </View>
       <FlatList
-        data={sorted}
+        data={motivationalSettings}
         renderItem={({item}) => (
           <MotivationalSettingsItem
             key={item.id}

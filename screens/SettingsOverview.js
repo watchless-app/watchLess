@@ -7,55 +7,55 @@ import {
   Linking,
   Text,
   TouchableHighlight,
-  Alert,
 } from 'react-native';
-import Share from 'react-native-share';
-import {encode} from 'base-64';
-import {decode as utf8decode, encode as utf8encode} from 'utf8';
-import DocumentPicker from 'react-native-document-picker';
-import RNFS from 'react-native-fs';
 
-import updateChanges from '../utils/updateChanges';
+// import Share from 'react-native-share';
+// import {encode} from 'base-64';
+// import {decode as utf8decode, encode as utf8encode} from 'utf8';
+// import DocumentPicker from 'react-native-document-picker';
+// import RNFS from 'react-native-fs';
+// import updateChanges from '../utils/updateChanges';
+
 import Colors from '../constants/Colors';
 
 const SettingsOverview = ({navigation, openURL, settings, setSettings}) => {
-  const handleImport = () => {
-    try {
-      DocumentPicker.pick().then(result => {
-        RNFS.readFile(result.uri).then(data => {
-          // const settingsString = utf8decode(data);
-          const settingsString = data;
-          const newSettings = JSON.parse(settingsString);
-          if (typeof newSettings.hideSettings === 'object') {
-            updateChanges(newSettings, setSettings, false);
-            Alert.alert('Settings imported.', 'You have to save now!');
-          } else {
-            throw new Error('Selected file has wrong format.');
-          }
-        });
-      });
-    } catch (error) {
-      Alert.alert(error);
-    }
-  };
+  // const handleImport = () => {
+  //   try {
+  //     DocumentPicker.pick().then(result => {
+  //       RNFS.readFile(result.uri).then(data => {
+  //         // const settingsString = utf8decode(data);
+  //         const settingsString = data;
+  //         const newSettings = JSON.parse(settingsString);
+  //         if (typeof newSettings.hideSettings === 'object') {
+  //           updateChanges(newSettings, setSettings, false);
+  //           Alert.alert('Settings imported.', 'You have to save now!');
+  //         } else {
+  //           throw new Error('Selected file has wrong format.');
+  //         }
+  //       });
+  //     });
+  //   } catch (error) {
+  //     Alert.alert(error);
+  //   }
+  // };
 
-  const handleExport = () => {
-    const bytes = utf8encode(JSON.stringify(settings));
-    const base64Data = encode(bytes);
-    const options = {
-      title: 'AFV_settings.txt',
-      filename: 'AFV_settings',
-      type: 'text/plain',
-      url: `data:text/plain;base64,${base64Data}`,
-    };
-    Share.open(options)
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => {
-        err && console.log(err);
-      });
-  };
+  // const handleExport = () => {
+  //   const bytes = utf8encode(JSON.stringify(settings));
+  //   const base64Data = encode(bytes);
+  //   const options = {
+  //     title: 'AFV_settings.txt',
+  //     filename: 'AFV_settings',
+  //     type: 'text/plain',
+  //     url: `data:text/plain;base64,${base64Data}`,
+  //   };
+  //   Share.open(options)
+  //     .then(res => {
+  //       console.log(res);
+  //     })
+  //     .catch(err => {
+  //       err && console.log(err);
+  //     });
+  // };
 
   return (
     <ScrollView>
@@ -63,20 +63,18 @@ const SettingsOverview = ({navigation, openURL, settings, setSettings}) => {
         <View style={styles.itemList}>
           <TouchableHighlight
             underlayColor={Colors.underlayColor}
-            onPress={() =>
-              Linking.openURL('https://addiction-free-video.tribe.so/')
-            }>
+            onPress={() => Linking.openURL('https://watchless.tribe.so/')}>
             <View style={styles.item}>
               <Text style={styles.itemText}>Help</Text>
             </View>
           </TouchableHighlight>
-          <TouchableHighlight
+          {/* <TouchableHighlight
             underlayColor={Colors.underlayColor}
             onPress={() => navigation.navigate('donation')}>
             <View style={styles.item}>
               <Text style={styles.itemText}>Donate</Text>
             </View>
-          </TouchableHighlight>
+          </TouchableHighlight> */}
           <TouchableHighlight
             underlayColor={Colors.underlayColor}
             onPress={() => navigation.navigate('hidesettings')}>
@@ -114,14 +112,14 @@ const SettingsOverview = ({navigation, openURL, settings, setSettings}) => {
           </TouchableHighlight>
         </View>
 
-        <View style={styles.buttonWrapper}>
+        {/* <View style={styles.buttonWrapper}>
           <View style={{...styles.button, marginRight: 10}}>
             <Button title="Export" onPress={handleExport} />
           </View>
           <View style={styles.button}>
             <Button title="Import" onPress={handleImport} />
           </View>
-        </View>
+        </View> */}
         <View style={styles.buttonWrapper}>
           <View style={{...styles.button, marginRight: 10}}>
             <Button

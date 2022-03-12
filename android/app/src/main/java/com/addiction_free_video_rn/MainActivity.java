@@ -1,4 +1,4 @@
-package com.addiction_free_video_rn;
+package li.tyou.watchless;
 
 import com.facebook.react.ReactActivity;
 import android.os.Bundle;
@@ -13,7 +13,7 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "addiction_free_video_rn";
+    return "watchless";
   }
 
   @Override

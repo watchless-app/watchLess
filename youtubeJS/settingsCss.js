@@ -11,13 +11,9 @@ export default settings => {
         `;
   }
 
-  if (hideSettings?.trendingPage) {
+  if (hideSettings?.shortsTab) {
     css += `
-            ytm-pivot-bar-renderer[role="tablist"] ytm-pivot-bar-item-renderer:nth-child(2){
-                display: none;
-            }
-        
-            div[tab-identifier="FEtrending"] {
+            ytm-pivot-bar-renderer ytm-pivot-bar-item-renderer:nth-child(2) {
                 display: none;
             }
         `;
@@ -33,8 +29,8 @@ export default settings => {
 
   if (hideSettings?.likeButton) {
     css += `
-            .slim-video-metadata-actions c3-material-button:nth-child(1),
-            .slim-video-metadata-actions c3-material-button:nth-child(2){
+            .slim-video-action-bar-actions c3-material-button:nth-child(1),
+            .slim-video-action-bar-actions c3-material-button:nth-child(2){
                 display: none;
             }
         `;
@@ -42,29 +38,48 @@ export default settings => {
 
   if (hideSettings?.likeCount) {
     css += `
-            .slim-video-metadata-actions c3-material-button:nth-child(1) div.button-renderer-text,
-            .slim-video-metadata-actions c3-material-button:nth-child(2) div.button-renderer-text {
+            .slim-video-action-bar-actions c3-material-button:nth-child(1) div.button-renderer-text {
                 display: none;
+            }
+
+            ytm-video-description-header-renderer .factoids ytm-sentiment-factoid-renderer:nth-child(1){
+                display: none;
+            }
+
+            shorts-video ytm-like-button-renderer div.button-renderer-text {
+                display: none;
+            }
+
+            ytm-comment-renderer div.comment-icons:first-of-type span.comment-count {
+                visibility: hidden;
             }
         `;
   }
 
   if (hideSettings?.views) {
     css += `
-            .slim-video-metadata-title-and-badges div {
+            /* On Video Page */
+            .slim-video-information-title-and-badges span.secondary-text {
                 display: none;
             }
 
+            ytm-video-description-header-renderer .factoids ytm-factoid-renderer:nth-child(2){
+                display: none;
+            }
+
+            /* In Search results */
             ytm-compact-video-renderer a.compact-media-item-metadata-content div.subhead div:nth-last-child(2){
                 display: none;
             }
 
+            /* In Sub feed */
             ytm-video-with-context-renderer div.details ytm-badge-and-byline-renderer span.ytm-badge-and-byline-item-byline.small-text:nth-child(3),
             ytm-video-with-context-renderer div.details ytm-badge-and-byline-renderer span.ytm-badge-and-byline-separator:nth-child(2)
             {
                 display: none;
             }
 
+            /* Channel Sub count */
             ytm-channel-about-metadata-renderer div p:nth-child(3){
                 display: none;
             }
@@ -82,16 +97,12 @@ export default settings => {
   if (hideSettings?.commentCount) {
     css += `
             ytm-comments-entry-point-header-renderer span.formatted-string-text:first-of-type {
-                color: white;
-                margin-bottom: -15px;
+                color: transparent;
             }
 
-            /*ytm-comments-entry-point-header-renderer span.formatted-string-text:first-of-type strong::before {
-                content: "Comments";
-                display: block;
-                position: relative;
-                color: black;
-            }*/
+            shorts-video div.reel-player-overlay-actions c3-material-button:first-of-type div.button-renderer-text {
+                display: none;
+            }
         `;
   }
 
@@ -113,11 +124,7 @@ export default settings => {
 
   if (hideSettings?.subscriptionFeed) {
     css += `
-            div[tab-identifier="FEsubscriptions"] {
-                display: none;
-            }
-
-            div.pivot-bar-item-tab.pivot-subs {
+            ytm-pivot-bar-renderer ytm-pivot-bar-item-renderer:nth-last-child(2) {
                 display: none;
             }
         `;

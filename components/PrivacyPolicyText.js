@@ -7,8 +7,8 @@ const PrivacyPolicyText = () => {
   return (
     <View>
       <Text>
-        This app (Addiction Free Video) displays the official mobile Youtube.com
-        website and removes some addictive elements from the view. This app is a
+        This app (watchLess) displays the official mobile Youtube.com website
+        and removes some addictive elements from the view. This app is a
         3rd-party client: all content is provided by YouTube.
       </Text>
       <Text>
@@ -30,7 +30,7 @@ const PrivacyPolicyText = () => {
         Jakob Gaiswinkler (
         <Link href="https://www.jakobg.dev">www.jakobg.dev</Link>)
       </Text>
-      <Text>afv@jakobg.dev</Text>
+      <Text>watchless@jakobg.dev</Text>
       <Text> </Text>
     </View>
   );

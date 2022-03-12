@@ -1,11 +1,9 @@
-package com.addiction_free_video_rn;
+package li.tyou.watchless;
 
 import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
-import com.rnfs.RNFSPackage;
-import com.rnfs.RNFSPackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
@@ -76,7 +74,7 @@ public class MainApplication extends Application implements ReactApplication {
          We use reflection here to pick up the class that initializes Flipper,
         since Flipper library is not available in release mode
         */
-        Class<?> aClass = Class.forName("com.addiction_free_video_rn.ReactNativeFlipper");
+        Class<?> aClass = Class.forName("li.tyou.watchless.ReactNativeFlipper");
         aClass
             .getMethod("initializeFlipper", Context.class, ReactInstanceManager.class)
             .invoke(null, context, reactInstanceManager);

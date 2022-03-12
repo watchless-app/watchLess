@@ -67,7 +67,7 @@ const SettingsNavigator = ({
         {props => (
           <AdvancedOptions
             {...props}
-            settings={settings.advancedSettings}
+            advancedSettings={settings.advancedSettings}
             setSettings={setSettings}
           />
         )}
@@ -76,7 +76,7 @@ const SettingsNavigator = ({
         {props => (
           <HideSettings
             {...props}
-            settings={settings.hideSettings}
+            hideSettings={settings.hideSettings}
             setSettings={setSettings}
           />
         )}
@@ -87,7 +87,7 @@ const SettingsNavigator = ({
         {props => (
           <MotivationalSettings
             {...props}
-            settings={settings.motivationalSettings}
+            motivationalSettings={settings.motivationalSettings}
             setSettings={setSettings}
           />
         )}
@@ -96,7 +96,7 @@ const SettingsNavigator = ({
         {props => (
           <AddMotivationalSetting
             {...props}
-            settings={settings.motivationalSettings}
+            motivationalSettings={settings.motivationalSettings}
             invidiousApi={settings.advancedSettings.invidiousApi}
             setSettings={setSettings}
           />

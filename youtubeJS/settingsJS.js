@@ -1,24 +1,43 @@
 export default settings => {
   let js = '';
+  const blockedURLs = [];
+
+  if (settings?.hideSettings?.subscriptionFeed) {
+    blockedURLs.push({
+      url: 'youtube.com/feed/subscriptions',
+      error: 'Subscription Feed is blocked.',
+    });
+  }
+
+  if (settings?.hideSettings?.trendingPage) {
+    blockedURLs.push({
+      url: 'youtube.com/feed/explore',
+      error: 'Trending page is blocked.',
+    });
+    blockedURLs.push({
+      url: 'youtube.com/feed/trending',
+      error: 'Trending page is blocked.',
+    });
+  }
+
+  if (settings?.hideSettings?.shorts) {
+    blockedURLs.push({
+      url: 'youtube.com/shorts',
+      error: 'Shorts are blocked.',
+    });
+  }
+
+  const localSettings = {...settings, blockedURLs};
 
   //js Without Condition
   js += `
     if (typeof AFV_allSettings === 'undefined') {
-      var AFV_allSettings = '${JSON.stringify(settings)}';
+      window['AFV_allSettings'] = '${JSON.stringify(localSettings)}';
     }
-    `;
+  `;
 
   if (settings?.advancedSettings?.customJS) {
     js += ' ' + settings?.advancedSettings?.customJS;
-  }
-
-  //Disable Autoplay
-  if (settings?.advancedSettings?.noautoplay) {
-    js += ` 
-    if (typeof AFV_disableAutoplay === 'undefined') {
-      var AFV_disableAutoplay = true;
-    } 
-    `;
   }
 
   return js;

@@ -2,14 +2,14 @@ import React from 'react';
 import {View, Text, TextInput, StyleSheet, ScrollView} from 'react-native';
 import SwitchItem from '../components/SwitchItem';
 
-const AdvancedOptions = ({setSettings, settings}) => {
+const AdvancedOptions = ({setSettings, advancedSettings}) => {
   return (
     <ScrollView>
       <View style={styles.container}>
         <SwitchItem
           title="Hide AF-Video Header (recommended)"
           id="hideHeader"
-          value={settings.hideHeader}
+          value={advancedSettings.hideHeader}
           setSettings={setSettings}
           settingsPath="advancedSettings"
         />
@@ -17,7 +17,7 @@ const AdvancedOptions = ({setSettings, settings}) => {
         <View style={styles.itemWrapper}>
           <Text style={styles.itemTitle}>Save Countdown in Seconds:</Text>
           <TextInput
-            value={settings.countdown.toString()}
+            value={advancedSettings.countdown.toString()}
             style={styles.textInput}
             keyboardType="number-pad"
             onChangeText={text => {
@@ -34,7 +34,7 @@ const AdvancedOptions = ({setSettings, settings}) => {
         <View style={styles.itemWrapper}>
           <Text style={styles.itemTitle}>Invidious API URL:</Text>
           <TextInput
-            value={settings.invidiousApi}
+            value={advancedSettings.invidiousApi}
             style={styles.textInput}
             onChangeText={url => {
               setSettings(prevState => {
@@ -49,7 +49,7 @@ const AdvancedOptions = ({setSettings, settings}) => {
         <SwitchItem
           title="Auto Update Invidious API URL"
           id="invidiousApiAutoUpdate"
-          value={settings.invidiousApiAutoUpdate}
+          value={advancedSettings.invidiousApiAutoUpdate}
           setSettings={setSettings}
           settingsPath="advancedSettings"
         />
@@ -57,7 +57,7 @@ const AdvancedOptions = ({setSettings, settings}) => {
         <SwitchItem
           title="Disable Autoplay"
           id="noautoplay"
-          value={settings.noautoplay}
+          value={advancedSettings.noautoplay}
           setSettings={setSettings}
           settingsPath="advancedSettings"
         />
@@ -65,7 +65,7 @@ const AdvancedOptions = ({setSettings, settings}) => {
         <View style={styles.itemWrapper}>
           <Text style={styles.itemTitle}>Custom CSS:</Text>
           <TextInput
-            value={settings.customCSS}
+            value={advancedSettings.customCSS}
             style={styles.textInput}
             multiline
             onChangeText={text => {
@@ -80,7 +80,7 @@ const AdvancedOptions = ({setSettings, settings}) => {
         <View style={styles.itemWrapper}>
           <Text style={styles.itemTitle}>Custom JS:</Text>
           <TextInput
-            value={settings.customJS}
+            value={advancedSettings.customJS}
             style={styles.textInput}
             multiline
             onChangeText={text => {

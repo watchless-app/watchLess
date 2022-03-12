@@ -1,15 +1,15 @@
-![alt AF-Video Icon](https://addiction-free-video.github.io/assets/banner.jpg)
+![alt watchLess App Icon](https://watchless-app.github.io/assets/banner.jpg)
 
 &nbsp;
 &nbsp;
 
-A Youtube Player App that removes addictive elements like recommendations or trending tab.
+A Youtube Player App that removes elements like recommendations and trending tab.
 
-Download: [addiction-free-video.github.io](https://addiction-free-video.github.io/)
+Download: [watchless-app.github.io](https://watchless-app.github.io/)
 
 Tech Stack: React native
 
-[community forum](https://addiction-free-video.tribe.so/)
+[community forum](https://watchless.tribe.so/)
 
 ## Developer Guide
 
@@ -17,8 +17,6 @@ Useful commands:
 
 - `yarn install` - Install node modules
 - `npx react-native start` - start metro
-- `npx react-native run-android --variant=WebsiteDebug` - run android
-- `cd android && ./gradlew assembleWebsiteRelease` - build apk
-- `cd android && ./gradlew bundleWebsiteRelease` - build bundle
-
-Availabe Flavors (variant = Flavor+Debug/Release): `googlePlay`, `amazon`, `website`
+- `npx react-native run-android` - run android
+- `cd android && ./gradlew assembleRelease` - build apk
+- `cd android && ./gradlew bundleRelease` - build bundle
