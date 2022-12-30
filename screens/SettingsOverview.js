@@ -4,7 +4,6 @@ import {
   View,
   StyleSheet,
   Button,
-  Linking,
   Text,
   TouchableHighlight,
 } from 'react-native';
@@ -61,13 +60,6 @@ const SettingsOverview = ({navigation, openURL, settings, setSettings}) => {
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.itemList}>
-          <TouchableHighlight
-            underlayColor={Colors.underlayColor}
-            onPress={() => Linking.openURL('https://watchless.tribe.so/')}>
-            <View style={styles.item}>
-              <Text style={styles.itemText}>Help</Text>
-            </View>
-          </TouchableHighlight>
           {/* <TouchableHighlight
             underlayColor={Colors.underlayColor}
             onPress={() => navigation.navigate('donation')}>

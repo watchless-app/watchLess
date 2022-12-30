@@ -1,24 +1,17 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
   ActivityIndicator,
   Linking,
   Platform,
-  DeviceEventEmitter,
-  Alert,
   BackHandler,
   useColorScheme,
 } from 'react-native';
 import {WebView} from 'react-native-webview';
 import Orientation from 'react-native-orientation-locker';
-import GoogleCast, {
-  CastButton,
-  useRemoteMediaClient,
-} from 'react-native-google-cast';
-import WebViewHeader from '../components/WebViewHeader';
 
-import {castVideo} from '../utils/castVideoFn';
+import WebViewHeader from '../components/WebViewHeader';
 
 //Import Youtube JS and CSS
 import getCss from '../youtubeJS/youtube.css';
@@ -35,39 +28,19 @@ const getCSSInjectWrapper = stringCSS => {
   `;
 };
 
-const webviewRef = React.createRef();
+const webViewRef = React.createRef();
 
 const WebViewScreen = ({settings, setSettings, openSettings, urlToOpen}) => {
-  const client = useRemoteMediaClient();
-  const scheme = useColorScheme();
+  let scheme = useColorScheme();
+  let initialOrientaionLockDone = false;
 
   const handleBackButton = () => {
-    webviewRef.current?.goBack();
+    webViewRef.current?.goBack();
     return true;
   };
 
   useEffect(() => {
     if (Platform.OS === 'android') {
-      DeviceEventEmitter.addListener('WebViewPlayVideoFullScreenStart', () => {
-        console.log('WebViewPlayVideoFullScreenStart');
-        Orientation.lockToLandscape();
-      });
-      DeviceEventEmitter.addListener('WebViewPlayVideoFullScreenEnd', () => {
-        console.log('WebViewPlayVideoFullScreenEnd');
-        Orientation.lockToPortrait();
-      });
-
-      GoogleCast.onCastStateChanged(castState => {
-        // 'noDevicesAvailable' | 'notConnected' | 'connecting' | 'connected'
-        if (castState === 'connected') {
-          // webviewRef.current?.injectJavaScript(`alert('Chromecast connected')`);
-          Alert.alert(
-            'Chromecast connected',
-            'To cast a video click the play button.',
-          );
-        }
-      });
-
       BackHandler.addEventListener('hardwareBackPress', handleBackButton);
 
       return () => {
@@ -76,12 +49,25 @@ const WebViewScreen = ({settings, setSettings, openSettings, urlToOpen}) => {
     }
   }, []);
 
+  useEffect(() => {
+    if (settings && initialOrientaionLockDone === false) {
+      if (settings.advancedSettings.orientationLock) {
+        Orientation.lockToPortrait();
+      }
+      initialOrientaionLockDone = true;
+    }
+  }, [settings]);
+
   if (!settings) {
     return (
       <View style={styles.loaderContaienr}>
         <ActivityIndicator size={'large'} color="grey" />
       </View>
     );
+  }
+
+  if (settings.advancedSettings.forceDarkMode) {
+    scheme = 'dark';
   }
 
   const stringCSS = getCSSInjectWrapper(
@@ -95,13 +81,21 @@ const WebViewScreen = ({settings, setSettings, openSettings, urlToOpen}) => {
     console.log(data);
 
     switch (data.action) {
-      case 'cast_button_click':
-        GoogleCast.showCastDialog();
-        break;
-
       case 'video_playpause':
         if (data.url.indexOf('/watch?v=') > -1 && data.type === 'play') {
-          castVideo(data, client, settings);
+          //do nothing
+        } else {
+          //do nothing
+        }
+        break;
+
+      case 'fullscreenchange':
+        if (settings.advancedSettings.orientationLock) {
+          if (data.type === 'start') {
+            Orientation.lockToLandscape();
+          } else {
+            Orientation.lockToPortrait();
+          }
         }
         break;
 
@@ -131,25 +125,27 @@ const WebViewScreen = ({settings, setSettings, openSettings, urlToOpen}) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.castButton}>
-        {/* Include Cast button and hide it, otherwise cast doesn't work */}
-        <CastButton />
-      </View>
       {!settings.advancedSettings?.hideHeader && (
         <WebViewHeader
           setSettings={setSettings}
           openSettings={openSettings}
-          webViewRef={webviewRef}
+          webViewRef={webViewRef}
         />
       )}
       <WebView
-        ref={webviewRef}
+        ref={webViewRef}
         source={{uri: urlToOpen}}
         allowsFullscreenVideo={true}
         injectedJavaScript={stringJSandCSS}
         onMessage={handleMessage}
         onShouldStartLoadWithRequest={handleLoad}
         forceDarkOn={scheme === 'dark'}
+        onRenderProcessGone={() =>
+          setReloadKey(webViewRef.current?.forceUpdate())
+        }
+        onContentProcessDidTerminate={() =>
+          setReloadKey(webViewRef.current?.forceUpdate())
+        }
       />
     </View>
   );
@@ -163,13 +159,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  // Hide Button by moving off screen (cast doesn't work if button not placed)
-  castButton: {
-    display: 'none',
-    position: 'absolute',
-    top: -40,
-    right: -40,
   },
 });
 

@@ -71,13 +71,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  // Hide Button by moving off screen (cast doesn't work if button not placed)
-  castButton: {
-    display: 'none',
-    position: 'absolute',
-    top: -40,
-    right: -40,
-  },
   headerWrapper: {
     minHeight: 30,
     flexDirection: 'row',

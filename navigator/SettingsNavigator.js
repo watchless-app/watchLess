@@ -97,7 +97,6 @@ const SettingsNavigator = ({
           <AddMotivationalSetting
             {...props}
             motivationalSettings={settings.motivationalSettings}
-            invidiousApi={settings.advancedSettings.invidiousApi}
             setSettings={setSettings}
           />
         )}

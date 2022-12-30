@@ -9,8 +9,8 @@ const Donate = () => {
       <Text>
         To donate please contact me at:{' '}
         <HyperLink
-          href={`mailto:afv@jakobg.dev?subject=AF-Video%20App%20Donation&body=I%20would%20like%20to%20donate%20(amount)%3A%0D%0AI%20am%20located%20in%20(your%20country)%3A%0D%0AMy%20name%20is%3A%20`}>
-          afv@jakobg.dev
+          href={`mailto:watchless@jakobg.dev?subject=watchLess%20App%20Donation&body=I%20would%20like%20to%20donate%20(amount)%3A%0D%0AI%20am%20located%20in%20(your%20country)%3A%0D%0AMy%20name%20is%3A%20`}>
+          watchless@jakobg.dev
         </HyperLink>
       </Text>
     </View>

@@ -136,7 +136,6 @@ const styles = StyleSheet.create({
   },
   item: {
     flexDirection: 'row',
-    // justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 10,
     borderBottomColor: 'grey',
@@ -145,10 +144,8 @@ const styles = StyleSheet.create({
   itemTextWrapper: {
     flex: 1,
   },
-  itemText: {},
   itemButtonContainer: {
     flexDirection: 'column',
-    // flex: 1,
     flexBasis: 50,
     justifyContent: 'center',
     alignItems: 'center',

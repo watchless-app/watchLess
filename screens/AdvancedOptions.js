@@ -14,6 +14,22 @@ const AdvancedOptions = ({setSettings, advancedSettings}) => {
           settingsPath="advancedSettings"
         />
 
+        <SwitchItem
+          title="Lock Orientation"
+          id="orientationLock"
+          value={advancedSettings.orientationLock}
+          setSettings={setSettings}
+          settingsPath="advancedSettings"
+        />
+
+        <SwitchItem
+          title="Force Dark mode"
+          id="forceDarkMode"
+          value={advancedSettings.forceDarkMode}
+          setSettings={setSettings}
+          settingsPath="advancedSettings"
+        />
+
         <View style={styles.itemWrapper}>
           <Text style={styles.itemTitle}>Save Countdown in Seconds:</Text>
           <TextInput
@@ -31,36 +47,6 @@ const AdvancedOptions = ({setSettings, advancedSettings}) => {
             }}
           />
         </View>
-        <View style={styles.itemWrapper}>
-          <Text style={styles.itemTitle}>Invidious API URL:</Text>
-          <TextInput
-            value={advancedSettings.invidiousApi}
-            style={styles.textInput}
-            onChangeText={url => {
-              setSettings(prevState => {
-                const newState = {...prevState};
-                newState.advancedSettings.invidiousApi = url;
-                return newState;
-              });
-            }}
-          />
-        </View>
-
-        <SwitchItem
-          title="Auto Update Invidious API URL"
-          id="invidiousApiAutoUpdate"
-          value={advancedSettings.invidiousApiAutoUpdate}
-          setSettings={setSettings}
-          settingsPath="advancedSettings"
-        />
-
-        <SwitchItem
-          title="Disable Autoplay"
-          id="noautoplay"
-          value={advancedSettings.noautoplay}
-          setSettings={setSettings}
-          settingsPath="advancedSettings"
-        />
 
         <View style={styles.itemWrapper}>
           <Text style={styles.itemTitle}>Custom CSS:</Text>

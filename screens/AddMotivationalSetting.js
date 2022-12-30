@@ -17,7 +17,6 @@ const AddMotivationalSetting = ({
   motivationalSettings,
   navigation,
   route,
-  invidiousApi,
 }) => {
   const id = route.params?.id;
   let itemToEdit = null;
@@ -78,17 +77,21 @@ const AddMotivationalSetting = ({
     navigation.goBack();
   };
 
-  const handleDeleteItem = index => {
+  const handleDeleteItem = id => {
     setSettings(prevState => {
       const newState = {...prevState};
 
-      const actualItemIndex = newState.motivationalSettings.findIndex(
-        item => item.index === index,
+      const itemIndex = newState.motivationalSettings.findIndex(
+        item => item.id === id,
       );
 
-      newState.motivationalSettings.splice(actualItemIndex, 1);
+      newState.motivationalSettings.splice(itemIndex, 1);
       return newState;
     });
+  };
+
+  const removeSpecialCharacters = text => {
+    return text.replace(/["]/g, '“').replace(/['":*<>{}]/g, '');
   };
 
   useLayoutEffect(() => {
@@ -137,7 +140,7 @@ const AddMotivationalSetting = ({
                 multiline
                 onChangeText={text => {
                   setLocalData(prevState => {
-                    return {...prevState, text};
+                    return {...prevState, text: removeSpecialCharacters(text)};
                   });
                 }}
               />
@@ -148,7 +151,10 @@ const AddMotivationalSetting = ({
                 value={localData.author}
                 onChangeText={author => {
                   setLocalData(prevState => {
-                    return {...prevState, author};
+                    return {
+                      ...prevState,
+                      author: removeSpecialCharacters(author),
+                    };
                   });
                 }}
               />
@@ -159,7 +165,6 @@ const AddMotivationalSetting = ({
           <View style={{marginTop: 15}}>
             <Text>Video: {localData?.title}</Text>
             <YoutubeSearch
-              api={invidiousApi}
               onSelectVideo={videoData => {
                 setLocalData(videoData);
               }}

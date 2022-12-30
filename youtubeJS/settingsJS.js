@@ -31,8 +31,8 @@ export default settings => {
 
   //js Without Condition
   js += `
-    if (typeof AFV_allSettings === 'undefined') {
-      window['AFV_allSettings'] = '${JSON.stringify(localSettings)}';
+    if (typeof watchless_allSettings === 'undefined') {
+      window['watchless_allSettings'] = '${JSON.stringify(localSettings)}';
     }
   `;
 

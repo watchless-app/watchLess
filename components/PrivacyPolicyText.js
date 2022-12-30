@@ -7,9 +7,9 @@ const PrivacyPolicyText = () => {
   return (
     <View>
       <Text>
-        This app (watchLess) displays the official mobile Youtube.com website
-        and removes some addictive elements from the view. This app is a
-        3rd-party client: all content is provided by YouTube.
+        This app (watchLess) displays the mobile Youtube.com website and removes
+        some elements from the view. This app is a 3rd-party client: all content
+        is provided by YouTube.
       </Text>
       <Text>
         Because of this the{' '}

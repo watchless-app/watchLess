@@ -9,8 +9,6 @@ Download: [watchless-app.github.io](https://watchless-app.github.io/)
 
 Tech Stack: React native
 
-[community forum](https://watchless.tribe.so/)
-
 ## Developer Guide
 
 Useful commands:

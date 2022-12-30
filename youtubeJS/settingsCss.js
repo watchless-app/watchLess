@@ -21,7 +21,16 @@ export default settings => {
 
   if (hideSettings?.recommended) {
     css += `
+            /* Remove recommendations on normal video page */
             ytm-item-section-renderer[data-content-type='related'] {
+                display: none;
+            }
+
+            /* Remove recommendation in full screen mode */
+            div.fullscreen-recommendations-wrapper {
+                display: none;
+            }
+            div.fullscreen-more-videos-endpoint {
                 display: none;
             }
         `;
@@ -33,12 +42,18 @@ export default settings => {
             .slim-video-action-bar-actions c3-material-button:nth-child(2){
                 display: none;
             }
+
+            /* Like Button in Shorts */
+            shorts-video ytm-like-button-renderer {
+                display: none;
+            }
         `;
   }
 
   if (hideSettings?.likeCount) {
     css += `
-            .slim-video-action-bar-actions c3-material-button:nth-child(1) div.button-renderer-text {
+            /* Like Count on normal videop page */
+            .slim-video-action-bar-actions ytm-toggle-button-renderer:first-of-type div.yt-spec-button-shape-next--button-text-content {
                 display: none;
             }
 
@@ -46,10 +61,12 @@ export default settings => {
                 display: none;
             }
 
-            shorts-video ytm-like-button-renderer div.button-renderer-text {
+            /* Like Count in Shorts */
+            shorts-video ytm-toggle-button-renderer .yt-spec-button-shape-with-label__label {
                 display: none;
             }
 
+            /* Like Button in Comments */
             ytm-comment-renderer div.comment-icons:first-of-type span.comment-count {
                 visibility: hidden;
             }
@@ -91,6 +108,10 @@ export default settings => {
             ytm-comments-entry-point-header-renderer {
                 display: none;
             }
+
+            shorts-video div.reel-player-overlay-actions ytm-button-renderer:first-of-type {
+                display: none;
+            }
         `;
   }
 
@@ -100,7 +121,7 @@ export default settings => {
                 color: transparent;
             }
 
-            shorts-video div.reel-player-overlay-actions c3-material-button:first-of-type div.button-renderer-text {
+            shorts-video div.reel-player-overlay-actions ytm-button-renderer:first-of-type div.yt-spec-button-shape-with-label__label {
                 display: none;
             }
         `;

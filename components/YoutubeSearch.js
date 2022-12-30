@@ -11,7 +11,9 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-const YoutubeSearch = ({onSelectVideo, api}) => {
+import {YOUTUBE_API_KEY} from '@env';
+
+const YoutubeSearch = ({onSelectVideo}) => {
   const [searchResults, setResults] = useState([]);
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchInput, setInput] = useState('');
@@ -19,11 +21,15 @@ const YoutubeSearch = ({onSelectVideo, api}) => {
   const doSearch = async () => {
     setSearchLoading(true);
     try {
-      const url = `${api}/api/v1/search?q=${searchInput}&local=true`;
+      const url = `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&type=video&q=${searchInput}&local=true&key=${YOUTUBE_API_KEY}`;
       const resultsRaw = await fetch(url);
       let results = await resultsRaw.json();
 
-      setResults(results.slice(0, 10));
+      if (!results?.items) {
+        throw new Exception();
+      }
+
+      setResults(results.items);
       setSearchLoading(false);
     } catch (error) {
       setSearchLoading(false);
@@ -33,12 +39,12 @@ const YoutubeSearch = ({onSelectVideo, api}) => {
 
   const handleSelectVideo = videoData => {
     const newData = {
-      id: videoData.videoId,
+      id: videoData.id.videoId,
       type: 'video',
-      title: videoData.title,
-      linkUrl: `https://m.youtube.com/watch?v=${videoData.videoId}`,
+      title: videoData.snippet.title,
+      linkUrl: `https://m.youtube.com/watch?v=${videoData.id.videoId}`,
       imageUrl: videoData.imageURL,
-      creator: videoData.author,
+      creator: videoData.snippet.channelTitle,
     };
     onSelectVideo(newData);
     setResults([]);
@@ -47,7 +53,11 @@ const YoutubeSearch = ({onSelectVideo, api}) => {
   return (
     <View>
       <View style={styles.textInputWrapper}>
-        <TextInput value={searchInput} onChangeText={text => setInput(text)} />
+        <TextInput
+          value={searchInput}
+          placeholder={'Input video name'}
+          onChangeText={text => setInput(text)}
+        />
       </View>
       <View style={{alignSelf: 'flex-start'}}>
         <Button
@@ -60,15 +70,18 @@ const YoutubeSearch = ({onSelectVideo, api}) => {
         {searchLoading && <ActivityIndicator size="small" color="grey" />}
         {!searchLoading &&
           searchResults.map(item => {
-            const imageURL = item.videoThumbnails[0].url.replace(':3000', '');
+            const imageURL = item.snippet.thumbnails.high.url;
             return (
               <TouchableOpacity
                 onPress={() => {
                   handleSelectVideo({...item, imageURL});
-                }}>
-                <View style={styles.videoWrapper} key={item.videoId}>
-                  <Text style={styles.videoText}>{item.title}</Text>
-                  <Text style={styles.videoAuthor}>{item.author}</Text>
+                }}
+                key={item.id.videoId}>
+                <View style={styles.videoWrapper}>
+                  <Text style={styles.videoText}>{item.snippet.title}</Text>
+                  <Text style={styles.channelTitle}>
+                    {item.snippet.channelTitle}
+                  </Text>
                   <Image
                     style={styles.image}
                     source={{
@@ -101,7 +114,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 150,
   },
-  videoAuthor: {
+  channelTitle: {
     textAlign: 'center',
   },
   videoText: {

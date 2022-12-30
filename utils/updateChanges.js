@@ -6,12 +6,7 @@ export default async (settings, setSettings, checkVersion = true) => {
   const lastVersion = await AsyncStorage.getItem('lastVersion');
 
   if (checkVersion) {
-    if (
-      !(
-        convertVersionStringIntoNumber(currentVersion) >
-        convertVersionStringIntoNumber(lastVersion)
-      )
-    ) {
+    if (lastVersion === currentVersion) {
       setSettings(settings);
       return;
     }
@@ -38,11 +33,6 @@ export default async (settings, setSettings, checkVersion = true) => {
     ...settings.advancedSettings,
   };
 
-  if (settings.advancedSettings.invidiousApiAutoUpdate) {
-    newSettings.advancedSettings.invidiousApi =
-      DefaultSettings.advancedSettings.invidiousApi;
-  }
-
   AsyncStorage.setItem('settings', JSON.stringify(newSettings));
   setSettings(newSettings);
 
@@ -53,9 +43,4 @@ export default async (settings, setSettings, checkVersion = true) => {
 
 export const setLastVersion = () => {
   AsyncStorage.setItem('lastVersion', currentVersion);
-};
-
-const convertVersionStringIntoNumber = string => {
-  const strippedString = string.replace('.', '').replace('.', '');
-  return parseInt(strippedString);
 };
